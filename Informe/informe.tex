@@ -1,0 +1,46 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, margin=2.54cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, mexico]{babel}
+\usepackage[spanish]{layout}
+\usepackage[article]{ragged2e}
+\usepackage{textcomp}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\setlength{\parindent}{5pt}
+
+\title{Trabajo Práctico: Unidad 6}
+\author{Mellino, Natalia \and Farizano, Juan Ignacio}
+\date{}
+
+\begin{document}
+\maketitle
+
+%==============================================================================
+
+
+\begin{align*}
+intexp ::&= nat \; | \; var \; | \; -_u \; intexp \\
+         &| \;\; intexp \; +  \; intexp \\
+         &| \;\; intexp \; -_b  \; intexp \\
+         &| \;\; intexp \; \times  \; intexp \\
+         &| \;\; intexp \; \div  \; intexp \\
+boolesxp ::&= \textbf{true} \; | \; \textbf{false} \\
+           &| \;\; intexp \; ==  \; intexp \\
+           &| \;\; intexp \; \neq  \; intexp \\
+           &| \;\; intexp \; <  \; intexp \\
+           &| \;\; intexp \; >  \; intexp \\
+           &| \;\; boolexp \; \lor  \; boolexp \\
+           &| \;\; boolexp \; \land  \; boolexp \\
+           &| \;\; \neg \; boolexp \\
+comm ::&= \textbf{skip} \\
+       &| \;\; var = intexp \\
+       &| \;\; comm; \; comm \\
+       &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
+       &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
+\end{align*} 
+
+%==============================================================================
+
+\end{document}
