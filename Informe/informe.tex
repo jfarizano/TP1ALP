@@ -19,6 +19,8 @@
 
 %==============================================================================
 
+\section{Ejercicio 1}
+\subsection{Sintaxis Abstracta}
 
 \begin{align*}
 intexp ::&= nat \; | \; var \; | \; -_u \; intexp \\
@@ -26,6 +28,8 @@ intexp ::&= nat \; | \; var \; | \; -_u \; intexp \\
          &| \;\; intexp \; -_b  \; intexp \\
          &| \;\; intexp \; \times  \; intexp \\
          &| \;\; intexp \; \div  \; intexp \\
+         &| \;\; var = intexp \\
+         &| \;\; intexp, \; intexp \\
 boolesxp ::&= \textbf{true} \; | \; \textbf{false} \\
            &| \;\; intexp \; ==  \; intexp \\
            &| \;\; intexp \; \neq  \; intexp \\
@@ -39,7 +43,41 @@ comm ::&= \textbf{skip} \\
        &| \;\; comm; \; comm \\
        &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
        &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
-\end{align*} 
+\end{align*}
+
+\subsection{Sintaxis Concreta}
+
+\begin{align*}
+  digit ::&= \text{'0'} \; | \; \text{'1'} | \; \dotsc \; | \; \text{'9'} \\
+  letter ::&= \text{'a'} \; | \; \dotsc \; | \; \text{'Z'} \\
+  nat ::&= digit \; | \; digit \; nat \\
+  var ::&= letter \; | \; letter \; var \\
+  intexp ::&= nat \\
+           &| \; var \\
+           &| \; \text{'-'} \; intexp \\
+           &| \;\; intexp \; \text{'+'}  \; intexp \\
+           &| \;\; intexp \; \text{'-'}  \; intexp \\
+           &| \;\; intexp \; \text{'*'}  \; intexp \\
+           &| \;\; intexp \; \text{'/'}  \; intexp \\
+           &| \;\; \text{'('} \; intexp \; \text{')'} \\
+           &| \;\; var \; \text{'='} \; intexp \\
+           &| \;\; intexp \; \text{','} \; intexp \\
+boolesxp ::&= \text{'true'} \; | \; \text{'false'} \\
+           &| \;\; intexp \; \text{'=='} \; intexp \\
+           &| \;\; intexp \; \text{'!='}  \; intexp \\
+           &| \;\; intexp \; \text{'$<$'}  \; intexp \\
+           &| \;\; intexp \; \text{'$>$'}  \; intexp \\
+           &| \;\; boolexp \; \text{'\&\&'}  \; boolexp \\
+           &| \;\; boolexp \; \text{'$\vert\vert$'}  \; boolexp \\
+           &| \;\; \text{'!'} \; boolexp \\
+           &| \;\; \text{'('} \; boolexp \; \text{')'} \\
+com ::&= \textbf{skip} \\
+      &| \;\; var \; \text{'='} \; intexp \\
+      &| \;\; comm \; \text{';'} \; comm \\
+      &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+      &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'}  \;\; \text{'else'} \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+      &| \;\; \text{'while'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+\end{align*}
 
 %==============================================================================
 
