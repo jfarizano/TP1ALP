@@ -6,7 +6,9 @@
 \usepackage[article]{ragged2e}
 \usepackage{textcomp}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amsfonts}
+\usepackage{proof}
 
 \setlength{\parindent}{5pt}
 
@@ -17,6 +19,8 @@
 \begin{document}
 \maketitle
 
+%==============================================================================
+%==============================================================================
 %==============================================================================
 
 \section{Ejercicio 1}
@@ -44,6 +48,8 @@ comm ::&= \textbf{skip} \\
        &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
        &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
 \end{align*}
+
+%==============================================================================
 
 \subsection{Sintaxis Concreta}
 
@@ -78,6 +84,41 @@ com ::&= \textbf{skip} \\
       &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'}  \;\; \text{'else'} \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
       &| \;\; \text{'while'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
 \end{align*}
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section{Ejercicio 4:}
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section{Ejercicio 5:}
+
+Asumimos que la relación $\Downarrow_{exp}$ es determinista y procedemos por inducción
+en la última regla de derivación.
+Queremos probar : $ c \rightsquigarrow c', \: c \rightsquigarrow c'' \Rightarrow c' = c'' $ \\
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{ASS}: \\
+$c$ tiene la forma $\langle v=e, \sigma \rangle$ y tenemos la premisa
+$\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n, \sigma' \rangle$,
+inmediatamente debido a la regla \emph{ASS} obtenemos que
+$c' = \: \langle \textbf{skip}, [\sigma' \: \vert v : n] \rangle$.
+
+Supongamos entonces, que esta relación no es determinista, es decir que $ c' \neq c'' $.
+Por la forma que tiene $c$ observemos que la única regla que podemos usar en la
+derivación $ c \rightsquigarrow c'' $ es la regla \emph{ASS}, entonces tenemos que:
+$ \langle v=e, \sigma \rangle \rightsquigarrow \langle \textbf{skip}, [\sigma'' \: \vert v : n'] \rangle$
+con la premisa $\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n', \sigma'' \rangle$
+Como $ c' \neq c'' $ vemos que $ \sigma' \neq \sigma'' \lor n \neq n''$.
+Esto es una contradicción ya que por determinismo de la relación $\Downarrow_{exp}$ 
+necesariamente debe ocurrir que $ \sigma' = \sigma'' \land n = n''$. \\
+
+$\therefore \; c' = c''$
+
+
 
 %==============================================================================
 
