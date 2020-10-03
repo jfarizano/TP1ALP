@@ -12,7 +12,7 @@
 
 \setlength{\parindent}{5pt}
 
-\title{Trabajo Práctico: Unidad 6}
+\title{Trabajo Práctico 1}
 \author{Mellino, Natalia \and Farizano, Juan Ignacio}
 \date{}
 
@@ -23,8 +23,11 @@
 %==============================================================================
 %==============================================================================
 
-\section{Ejercicio 1}
-\subsection{Sintaxis Abstracta}
+\section*{Ejercicio 1}
+A continuación extendemos las sintaxis abstracta y concreta para incluir asignaciones
+de variables como expresiones enteras y para escribir una secuencia de expresiones enteras.
+
+\subsection*{Sintaxis Abstracta}
 
 \begin{align*}
 intexp ::&= nat \; | \; var \; | \; -_u \; intexp \\
@@ -51,7 +54,7 @@ comm ::&= \textbf{skip} \\
 
 %==============================================================================
 
-\subsection{Sintaxis Concreta}
+\subsection*{Sintaxis Concreta}
 
 \begin{align*}
   digit ::&= \text{'0'} \; | \; \text{'1'} | \; \dotsc \; | \; \text{'9'} \\
@@ -89,13 +92,13 @@ com ::&= \textbf{skip} \\
 %==============================================================================
 %==============================================================================
 
-\section{Ejercicio 4:}
+\section*{Ejercicio 4:}
 
 %==============================================================================
 %==============================================================================
 %==============================================================================
 
-\section{Ejercicio 5:}
+\section*{Ejercicio 5:}
 
 Asumimos que la relación $\Downarrow_{exp}$ es determinista y procedemos por inducción
 en la última regla de derivación.
@@ -116,10 +119,92 @@ Como $ c' \neq c'' $ vemos que $ \sigma' \neq \sigma'' \lor n \neq n''$.
 Esto es una contradicción ya que por determinismo de la relación $\Downarrow_{exp}$ 
 necesariamente debe ocurrir que $ \sigma' = \sigma'' \land n = n''$. \\
 
-$\therefore \; c' = c''$
-
+$\therefore \; c' = c''$ \\
 
 
 %==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{SEQ1}: \\
+$c$ tiene la forma $\langle \textbf{skip};c_1, \sigma \rangle$ y tenemos que $c' = \langle c_1, sigma \rangle$.
+Por la forma que tiene $c$, observemos que no es posible aplicar ninguna otra regla
+de inferencia, por lo tanto en la derivación $ c \rightsquigarrow c'' $ se tiene que
+$c'' = \langle c_1, \sigma \rangle$. \\
+
+$\therefore \; c' = c''$ \\
+
+%==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{SEQ2}: \\
+Tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1, \sigma \rangle$ y
+además:  $ \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle$.
+Ahora, analicemos que pasa en $ c \rightsquigarrow c'' $: ¿qué reglas podemos aplicar?
+
+\begin{itemize}
+      \item No podemos aplicar \emph{SEQ1} ya que esto nos diría que $c_0 = \textbf{skip}$ y esto
+            nos contradice $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0', \; \sigma \rangle$ ya que
+            si $c_0 = skip$ el estado $\sigma$ no debería pasar a ser $\sigma'$.
+      \item En cuanto a las demás reglas, es claro que por la forma que tiene $c$ no es
+            posible aplicarlas.
+\end{itemize}
+
+Por lo tanto, la única regla que podemos aplicar es \emph{SEQ2}. Si suponemos que 
+$c' \neq c''$ tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1,\sigma \rangle$ y
+además:  $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0'', \sigma'' \rangle$.
+Luego sigue que $c''$ tiene la forma: $ \langle c_0'';c1, \sigma'' \rangle$.
+Sin embargo, observemos que $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0', \; \sigma' \rangle$
+es una subderivación y por lo tanto vale nuestra Hipótesis Inductiva, es decir necesariamente:
+
+\begin{equation*}
+ \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle = \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0'', \; \sigma'' \rangle
+\end{equation*}
+
+Por lo tanto, $c_0' = c_0''$ y $\sigma' = \sigma''$. \\
+
+$\therefore \; c' = c''$ \\
+
+%==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{IF1}: \\
+$c$ tiene la forma $ \langle \textbf{if } \text{b \textbf{then} } c_0 \textbf{ else } c_1, \; \sigma \rangle$
+y además $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$.
+Entonces $c'$ tiene la forma $ \langle c_0, \sigma' \rangle$. ¿Qué pasa en el caso
+de  $ c \rightsquigarrow c'' $. Sabemos que por la forma que tiene $c$ y por el hecho de
+que $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
+sólo podemos aplicar la regla \emph{IF1}. Recordemos que la relación $\Downarrow_{exp}$ es
+determinista y por eso podemos decir que sólo podamos aplicar \emph{IF1}. inmediatamente
+de esta conclusión surge que $c' = c''$. \\
+
+%==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{IF2}:
+\begin{center}(este caso es análogo a la regla \emph{IF1})\end{center}
+
+%==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE1}: tenemos entonces que
+\begin{itemize}
+      \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \sigma \rangle$.
+      \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
+      \item $c' = \langle c0; \textbf{while } \text{b \textbf{do} } c_0, \sigma' \rangle$
+\end{itemize}
+
+Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
+de $\Downarrow_{exp}$, la única regla que podemos usar es \emph{WHILE1}. Por estas dos cosas
+surge inmediatamente que $c' = c''$. \\
+
+%==============================================================================
+
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE2}: tenemos entonces que
+\begin{itemize}
+      \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \; \sigma \rangle$.
+      \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{false}, \sigma' \rangle$
+      \item $c' = \langle \textbf{skip}, \sigma' \rangle$
+\end{itemize}
+
+Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
+de $\Downarrow_{exp}$, la única regla que podemos usar es \emph{WHILE1}. Por estas dos cosas
+surge inmediatamente que $c' = c''$. \\
+
+Por lo tanto, concluimos que la relación $ \rightsquigarrow $ es determinista.
 
 \end{document}
