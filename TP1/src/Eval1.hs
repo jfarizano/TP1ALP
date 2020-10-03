@@ -17,7 +17,7 @@ initState = M.empty
 
 -- Busca el valor de una variable en un estado
 lookfor :: Variable -> State -> Int
-lookfor v s = n where (Just n) = M.lookup v s
+lookfor v s = s M.! v
 
 -- Cambia el valor de una variable en un estado
 update :: Variable -> Int -> State -> State
@@ -52,7 +52,6 @@ stepComm w@(While e c) s = if b
 
 -- Evalua una expresion
 evalExp :: Exp a -> State -> Pair a State
-
 -- Expresiones enteras
 evalExp (Const n) s = (n :!: s)
 evalExp (Var x) s = (n :!: s)
@@ -80,42 +79,36 @@ evalExp (Div e e') s = (n :!: s'')
                            (n1 :!: s'') = evalExp e' s'
                            n = div n0 n1
 evalExp (EAssgn x e) s = (n :!: s'')
-                          where (n :!: s') = evalExp e s
-                                s'' = update x n s
-evalExp (ESeq e e') s = (n1 :!: s'')
-                        where
-                          (n0 :!: s') = evalExp e s
-                          (n1 :!: s'') = evalExp e' s'
-
+                          where 
+                            (n :!: s') = evalExp e s
+                            s'' = update x n s
+evalExp (ESeq e e') s = evalExp e' s' where (_ :!: s') = evalExp e s
 -- Expresiones booleanas
 evalExp BTrue s = (True :!: s)
 evalExp BFalse s = (False :!: s)
-evalExp (Lt e e') s = (n0 < n1 :!: s'')
-                       where (n0 :!: s') = evalExp e s
-                             (n1 :!: s'') = evalExp e' s'
-evalExp (Gt e e') s = (n0 > n1 :!: s'')
-                       where (n0 :!: s') = evalExp e s
-                             (n1 :!: s'') = evalExp e' s'
-evalExp (Eq e e') s = (n0 == n1 :!: s'')
-                       where (n0 :!: s') = evalExp e s
-                             (n1 :!: s'') = evalExp e' s'
-evalExp (NEq e e') s = (n0 /= n1 :!: s'')
-                        where (n0 :!: s') = evalExp e s
-                              (n1 :!: s'') = evalExp e' s'
-evalExp (And e e') s = (b0 && b1 :!: s'')
-                        where (b0 :!: s') = evalExp e s
-                              (b1 :!: s'') = evalExp e' s'                                                       
-evalExp (Or e e') s = ((b0 || b1) :!: s'')
-                        where (b0 :!: s') = evalExp e s
-                              (b1 :!: s'') = evalExp e' s'
 evalExp (Not e) s = (not b :!: s')
-                    where (b :!: s') = evalExp e s                             
-
-
-
--- intBinOp :: Exp Int -> (Exp Int -> Exp Int -> Exp Int)
--- intBinOp = case binOp of
---             Plus -> (+)
---             Minus -> (-)
---             Times -> (*)
---             Div -> div
+                    where (b :!: s') = evalExp e s
+evalExp (Lt e e') s = (n0 < n1 :!: s'')
+                       where 
+                         (n0 :!: s') = evalExp e s
+                         (n1 :!: s'') = evalExp e' s'
+evalExp (Gt e e') s = (n0 > n1 :!: s'')
+                       where 
+                         (n0 :!: s') = evalExp e s
+                         (n1 :!: s'') = evalExp e' s'
+evalExp (Eq e e') s = (n0 == n1 :!: s'')
+                       where 
+                        (n0 :!: s') = evalExp e s
+                        (n1 :!: s'') = evalExp e' s'
+evalExp (NEq e e') s = (n0 /= n1 :!: s'')
+                        where 
+                          (n0 :!: s') = evalExp e s
+                          (n1 :!: s'') = evalExp e' s'
+evalExp (And e e') s = (b0 && b1 :!: s'')
+                        where 
+                          (b0 :!: s') = evalExp e s
+                          (b1 :!: s'') = evalExp e' s'                                                       
+evalExp (Or e e') s = ((b0 || b1) :!: s'')
+                        where 
+                          (b0 :!: s') = evalExp e s
+                          (b1 :!: s'') = evalExp e' s'

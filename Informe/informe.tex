@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[11pt, fleqn]{article}
 \usepackage[a4paper, margin=2.54cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish, mexico]{babel}
@@ -28,28 +28,27 @@ A continuación extendemos las sintaxis abstracta y concreta para incluir asigna
 de variables como expresiones enteras y para escribir una secuencia de expresiones enteras.
 
 \subsection*{Sintaxis Abstracta}
-
 \begin{align*}
-intexp ::&= nat \; | \; var \; | \; -_u \; intexp \\
-         &| \;\; intexp \; +  \; intexp \\
-         &| \;\; intexp \; -_b  \; intexp \\
-         &| \;\; intexp \; \times  \; intexp \\
-         &| \;\; intexp \; \div  \; intexp \\
-         &| \;\; var = intexp \\
-         &| \;\; intexp, \; intexp \\
-boolesxp ::&= \textbf{true} \; | \; \textbf{false} \\
-           &| \;\; intexp \; ==  \; intexp \\
-           &| \;\; intexp \; \neq  \; intexp \\
-           &| \;\; intexp \; <  \; intexp \\
-           &| \;\; intexp \; >  \; intexp \\
-           &| \;\; boolexp \; \lor  \; boolexp \\
-           &| \;\; boolexp \; \land  \; boolexp \\
-           &| \;\; \neg \; boolexp \\
-comm ::&= \textbf{skip} \\
-       &| \;\; var = intexp \\
-       &| \;\; comm; \; comm \\
-       &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
-       &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
+intexp ::=& \; nat \; | \; var \; | \; -_u \; intexp \\
+          &| \;\; intexp \; +  \; intexp \\
+          &| \;\; intexp \; -_b  \; intexp \\
+          &| \;\; intexp \; \times  \; intexp \\
+          &| \;\; intexp \; \div  \; intexp \\
+          &| \;\; var = intexp \\
+          &| \;\; intexp, \; intexp \\
+boolesxp ::=& \; \textbf{true} \; | \; \textbf{false} \\
+            &| \;\; intexp \; ==  \; intexp \\
+            &| \;\; intexp \; \neq  \; intexp \\
+            &| \;\; intexp \; <  \; intexp \\
+            &| \;\; intexp \; >  \; intexp \\
+            &| \;\; boolexp \; \lor  \; boolexp \\
+            &| \;\; boolexp \; \land  \; boolexp \\
+            &| \;\; \neg \; boolexp \\
+comm ::=& \; \textbf{skip} \\
+        &| \;\; var = intexp \\
+        &| \;\; comm; \; comm \\
+        &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
+        &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
 \end{align*}
 
 %==============================================================================
@@ -57,35 +56,115 @@ comm ::&= \textbf{skip} \\
 \subsection*{Sintaxis Concreta}
 
 \begin{align*}
-  digit ::&= \text{'0'} \; | \; \text{'1'} | \; \dotsc \; | \; \text{'9'} \\
-  letter ::&= \text{'a'} \; | \; \dotsc \; | \; \text{'Z'} \\
-  nat ::&= digit \; | \; digit \; nat \\
-  var ::&= letter \; | \; letter \; var \\
-  intexp ::&= nat \\
-           &| \; var \\
-           &| \; \text{'-'} \; intexp \\
-           &| \;\; intexp \; \text{'+'}  \; intexp \\
-           &| \;\; intexp \; \text{'-'}  \; intexp \\
-           &| \;\; intexp \; \text{'*'}  \; intexp \\
-           &| \;\; intexp \; \text{'/'}  \; intexp \\
-           &| \;\; \text{'('} \; intexp \; \text{')'} \\
-           &| \;\; var \; \text{'='} \; intexp \\
-           &| \;\; intexp \; \text{','} \; intexp \\
-boolesxp ::&= \text{'true'} \; | \; \text{'false'} \\
-           &| \;\; intexp \; \text{'=='} \; intexp \\
-           &| \;\; intexp \; \text{'!='}  \; intexp \\
-           &| \;\; intexp \; \text{'$<$'}  \; intexp \\
-           &| \;\; intexp \; \text{'$>$'}  \; intexp \\
-           &| \;\; boolexp \; \text{'\&\&'}  \; boolexp \\
-           &| \;\; boolexp \; \text{'$\vert\vert$'}  \; boolexp \\
-           &| \;\; \text{'!'} \; boolexp \\
-           &| \;\; \text{'('} \; boolexp \; \text{')'} \\
-com ::&= \textbf{skip} \\
-      &| \;\; var \; \text{'='} \; intexp \\
-      &| \;\; comm \; \text{';'} \; comm \\
-      &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
-      &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'}  \;\; \text{'else'} \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
-      &| \;\; \text{'while'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+digit ::=& \; \text{'0'} \; | \; \text{'1'} | \; \dotsc \; | \; \text{'9'} \\
+letter ::=& \; \text{'a'} \; | \; \dotsc \; | \; \text{'Z'} \\
+nat ::=& \; digit \; | \; digit \; nat \\
+var ::=& \; letter \; | \; letter \; var \\
+intexp ::=& \; nat \\
+          &| \; var \\
+          &| \; \text{'-'} \; intexp \\
+          &| \;\; intexp \; \text{'+'}  \; intexp \\
+          &| \;\; intexp \; \text{'-'}  \; intexp \\
+          &| \;\; intexp \; \text{'*'}  \; intexp \\
+          &| \;\; intexp \; \text{'/'}  \; intexp \\
+          &| \;\; \text{'('} \; intexp \; \text{')'} \\
+          &| \;\; var \; \text{'='} \; intexp \\
+          &| \;\; intexp \; \text{','} \; intexp \\
+boolesxp ::=& \; \text{'true'} \; | \; \text{'false'} \\
+            &| \;\; intexp \; \text{'=='} \; intexp \\
+            &| \;\; intexp \; \text{'!='}  \; intexp \\
+            &| \;\; intexp \; \text{'$<$'}  \; intexp \\
+            &| \;\; intexp \; \text{'$>$'}  \; intexp \\
+            &| \;\; boolexp \; \text{'\&\&'}  \; boolexp \\
+            &| \;\; boolexp \; \text{'$\vert\vert$'}  \; boolexp \\
+            &| \;\; \text{'!'} \; boolexp \\
+            &| \;\; \text{'('} \; boolexp \; \text{')'} \\
+com ::=& \; \textbf{skip} \\
+       &| \;\; var \; \text{'='} \; intexp \\
+       &| \;\; comm \; \text{';'} \; comm \\
+       &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+       &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'}  \;\; \text{'else'} \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+       &| \;\; \text{'while'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+\end{align*}
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section*{Ejercicio 2:}
+Para extender la realización de la sistaxis abstracta en Haskell, incluimos
+estos contructores en el tipo de datos parametrizado Exp $a$. 
+\begin{align*}
+      \text{EAssgn} &:: \text{Variable} \rightarrow \text{Exp Int} \rightarrow \text{Exp Int} \\
+      \text{ESeq} &:: \text{Exp Int} \rightarrow \text{Exp Int} \rightarrow \text{Exp Int} \\
+\end{align*}
+En el archivo \emph{src/AST.hs} se encuentra reflejado este cambio.
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section*{Ejercicio 3:}
+Para implementar el parser, modificamos la gramática extendida en el ejercicio 1
+en una que no presente ambigüedad.
+
+\subsection*{Sintaxis Abstracta}
+\begin{align*}
+intexp ::=& \; intexp, \; intexp1 \; \vert \; intexp1 \\
+intexp1 ::=& \; var = intexp1 \; \vert \; intexp2 \\
+intexp2 ::=& \; intexp2 \; +  \; intexp3 \; \vert \; intexp2 \; -_b  \; intexp3 \; \vert \; intexp2\\
+intexp3 ::=& \; intexp3 \; \times  \; intexp4 \; \vert \; intexp3 \; \div  \; intexp4 \; \vert \; intexp4\\
+intexp4 ::=& \; -_u \; intexp4 \; \vert \; nat \; \vert \; var \; \vert \; (intexp) \\
+& \\
+boolexp ::=& \; boolexp \; \lor \; boolexp1 \; \vert \; boolexp1 \\
+boolexp1 ::=& \; boolexp1 \; \land \; boolexp2 \; \vert \; boolexp2 \\
+boolexp2 ::=& \; \neg \; boolexp2 \; \vert \; boolexp3 \\
+boolexp3 ::=& \; \textbf{true} \; \vert \; \textbf{false} \\
+            &| \;\; intexp == intexp \\
+            &| \;\; intexp \neq intexp \\
+            &| \;\; intexp > intexp \\
+            &| \;\; intexp < intexp \\
+            &| \;\; (boolexp) \\
+&\\
+comm ::=& \; comm; \; comm1 \; \vert \; comm1 \\
+comm1 ::=& \; \textbf{skip} \\
+         &| \;\; var = intexp \\
+         &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
+         &| \; \; \textbf{while} \; boolexp \; \textbf{do} \; comm
+\end{align*}
+
+%==============================================================================
+
+\subsection*{Sintaxis Concreta}
+
+\begin{align*}
+digit ::=& \; \text{'0'} \; | \; \text{'1'} | \; \dotsc \; | \; \text{'9'} \\
+letter ::=& \; \text{'a'} \; | \; \dotsc \; | \; \text{'Z'} \\
+nat ::=& \; digit \; | \; digit \; nat \\
+var ::=& \; letter \; | \; letter \; var \\
+&\\
+intexp ::=& \; intexp \; \text{','} \; intexp1 \; \vert \; intexp1 \\
+intexp1 ::=& \; var \; \text{'='} \; intexp1 \; \vert \; intexp2 \\
+intexp2 ::=& \; intexp2 \; \text{'+'}  \; intexp3 \; \vert \; intexp2 \; \text{'-'} \; intexp3 \; \vert \; intexp2\\
+intexp3 ::=& \; intexp3 \; \text{'*'}  \; intexp4 \; \vert \; intexp3 \; \text{'/'} \; intexp4 \; \vert \; intexp4\\
+intexp4 ::=& \; \text{'-'} \; intexp4 \; \vert \; nat \; \vert \; var \; \vert \; \text{'('} intexp \text{')'} \\
+& \\
+boolexp ::=& \; boolexp \; \text{'$\vert\vert$'} \; boolexp1 \; \vert \; boolexp1 \\
+boolexp1 ::=& \; boolexp1 \; \text{'\&\&'} \; boolexp2 \; \vert \; boolexp2 \\
+boolexp2 ::=& \; \text{'!='} \; boolexp2 \; \vert \; boolexp3 \\
+boolexp3 ::=& \; \textbf{true} \; \vert \; \textbf{false} \\
+            &| \;\; intexp \; \text{'=='} \; intexp \\
+            &| \;\; intexp \; \text{'!='} \; intexp \\
+            &| \;\; intexp \; \text{'$<$'} \; intexp \\
+            &| \;\; intexp \; \text{'$>$'} \; intexp \\
+            &| \;\; (boolexp) \\
+&\\
+comm ::=& \; comm \; \text{';'} \; comm1 \; \vert \; comm1 \\
+comm1 ::=& \; \textbf{skip} \\
+         &| \;\; var \; \text{'='} \; intexp \\
+         &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+         &| \;\; \text{'if'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'}  \;\; \text{'else'} \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
+         &| \;\; \text{'while'} \;\;boolexp \;\; \text{'\{'} \;\; comm \;\; \text{'\}'} \\
 \end{align*}
 
 %==============================================================================
@@ -206,5 +285,11 @@ de $\Downarrow_{exp}$, la única regla que podemos usar es \emph{WHILE1}. Por es
 surge inmediatamente que $c' = c''$. \\
 
 Por lo tanto, concluimos que la relación $ \rightsquigarrow $ es determinista.
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section*{Ejercicio 6:}
 
 \end{document}

@@ -19,6 +19,8 @@ pExp (Plus  a b) = pExp a <+> text "+" <+> pExp b
 pExp (Times a b) = pExp a <+> text "*" <+> pExp b
 pExp (Minus a b) = pExp a <+> text "-" <+> pExp b
 pExp (Div   a b) = pExp a <+> text "/" <+> pExp b
+pExp (EAssgn x e) = pVar x <+> text "=" <+> pExp e
+pExp (ESeq a b)  = pExp a <> semi $$ pExp b
 pExp BTrue       = text "true"
 pExp BFalse      = text "false"
 pExp (Eq  a b)   = pExp a <+> text "==" <+> pExp b
