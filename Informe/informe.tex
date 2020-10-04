@@ -10,6 +10,10 @@
 \usepackage{amsfonts}
 \usepackage{proof}
 
+\input{tp1-defs}
+\usepackage{bussproofs}
+\usepackage{graphicx}
+
 \setlength{\parindent}{5pt}
 
 \title{Trabajo Práctico 1}
@@ -173,6 +177,32 @@ comm1 ::=& \; \textbf{skip} \\
 
 \section*{Ejercicio 4:}
 
+A continuación modificamos la semántica big-step para incluir la asignación de variables como
+expresiones y para las secuencias de expresiones.
+
+\[
+\infr[\rn{EAssgn}]
+  {
+    \sexp{\pair{e}{\sigma}}{\pair{n}{\sigma'}}
+  }
+  {
+    \sexp{\pair{\eassgn{var}{e}}{\sigma}}{\pair{n}{\extf{\sigma'}{var}{n}}}
+  }
+\
+\]
+\smallskip
+\[
+\infr[\rn{ESeq}]
+  {
+    \sexp{\pair{e_0}{\sigma}}{\pair{n_0}{\sigma'}}
+    \quad
+    \sexp{\pair{e_1}{\sigma'}}{\pair{n_1}{\sigma''}}
+  }
+  {
+    \sexp{\pair{\eseq{e_0}{e_1}}{\sigma}}{\pair{n_1}{\sigma''}}
+  }
+\]
+
 %==============================================================================
 %==============================================================================
 %==============================================================================
@@ -183,15 +213,15 @@ Asumimos que la relación $\Downarrow_{exp}$ es determinista y procedemos por in
 en la última regla de derivación.
 Queremos probar : $ c \rightsquigarrow c', \: c \rightsquigarrow c'' \Rightarrow c' = c'' $ \\
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{ASS}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{ASS}: \\
 $c$ tiene la forma $\langle v=e, \sigma \rangle$ y tenemos la premisa
 $\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n, \sigma' \rangle$,
-inmediatamente debido a la regla \emph{ASS} obtenemos que
+inmediatamente debido a la regla \rn{Asumimos} obtenemos que
 $c' = \: \langle \textbf{skip}, [\sigma' \: \vert v : n] \rangle$.
 
 Supongamos entonces, que esta relación no es determinista, es decir que $ c' \neq c'' $.
 Por la forma que tiene $c$ observemos que la única regla que podemos usar en la
-derivación $ c \rightsquigarrow c'' $ es la regla \emph{ASS}, entonces tenemos que:
+derivación $ c \rightsquigarrow c'' $ es la regla \rn{Asumimos}, entonces tenemos que:
 $ \langle v=e, \sigma \rangle \rightsquigarrow \langle \textbf{skip}, [\sigma'' \: \vert v : n'] \rangle$
 con la premisa $\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n', \sigma'' \rangle$
 Como $ c' \neq c'' $ vemos que $ \sigma' \neq \sigma'' \lor n \neq n''$.
@@ -203,7 +233,7 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{SEQ1}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ1}: \\
 $c$ tiene la forma $\langle \textbf{skip};c_1, \sigma \rangle$ y tenemos que $c' = \langle c_1, sigma \rangle$.
 Por la forma que tiene $c$, observemos que no es posible aplicar ninguna otra regla
 de inferencia, por lo tanto en la derivación $ c \rightsquigarrow c'' $ se tiene que
@@ -213,20 +243,20 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{SEQ2}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ2}: \\
 Tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1, \sigma \rangle$ y
 además:  $ \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle$.
 Ahora, analicemos que pasa en $ c \rightsquigarrow c'' $: ¿qué reglas podemos aplicar?
 
 \begin{itemize}
-      \item No podemos aplicar \emph{SEQ1} ya que esto nos diría que $c_0 = \textbf{skip}$ y esto
+      \item No podemos aplicar \rn{SEQ1} ya que esto nos diría que $c_0 = \textbf{skip}$ y esto
             nos contradice $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0', \; \sigma \rangle$ ya que
             si $c_0 = skip$ el estado $\sigma$ no debería pasar a ser $\sigma'$.
       \item En cuanto a las demás reglas, es claro que por la forma que tiene $c$ no es
             posible aplicarlas.
 \end{itemize}
 
-Por lo tanto, la única regla que podemos aplicar es \emph{SEQ2}. Si suponemos que 
+Por lo tanto, la única regla que podemos aplicar es \rn{SEQ2}. Si suponemos que 
 $c' \neq c''$ tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1,\sigma \rangle$ y
 además:  $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0'', \sigma'' \rangle$.
 Luego sigue que $c''$ tiene la forma: $ \langle c_0'';c1, \sigma'' \rangle$.
@@ -243,24 +273,24 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{IF1}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF1}: \\
 $c$ tiene la forma $ \langle \textbf{if } \text{b \textbf{then} } c_0 \textbf{ else } c_1, \; \sigma \rangle$
 y además $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$.
 Entonces $c'$ tiene la forma $ \langle c_0, \sigma' \rangle$. ¿Qué pasa en el caso
 de  $ c \rightsquigarrow c'' $. Sabemos que por la forma que tiene $c$ y por el hecho de
 que $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
-sólo podemos aplicar la regla \emph{IF1}. Recordemos que la relación $\Downarrow_{exp}$ es
-determinista y por eso podemos decir que sólo podamos aplicar \emph{IF1}. inmediatamente
+sólo podemos aplicar la regla \rn{IF1}. Recordemos que la relación $\Downarrow_{exp}$ es
+determinista y por eso podemos decir que sólo podamos aplicar \rn{IF1}. inmediatamente
 de esta conclusión surge que $c' = c''$. \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{IF2}:
-\begin{center}(este caso es análogo a la regla \emph{IF1})\end{center}
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF2}:
+\begin{center}(este caso es análogo a la regla \rn{IF1})\end{center}
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE1}: tenemos entonces que
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE1}: tenemos entonces que
 \begin{itemize}
       \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \sigma \rangle$.
       \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
@@ -268,12 +298,12 @@ $\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE1}: 
 \end{itemize}
 
 Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
-de $\Downarrow_{exp}$, la única regla que podemos usar es \emph{WHILE1}. Por estas dos cosas
+de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE1}. Por estas dos cosas
 surge inmediatamente que $c' = c''$. \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE2}: tenemos entonces que
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE2}: tenemos entonces que
 \begin{itemize}
       \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \; \sigma \rangle$.
       \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{false}, \sigma' \rangle$
@@ -281,7 +311,7 @@ $\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \emph{WHILE2}: 
 \end{itemize}
 
 Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
-de $\Downarrow_{exp}$, la única regla que podemos usar es \emph{WHILE1}. Por estas dos cosas
+de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE1}. Por estas dos cosas
 surge inmediatamente que $c' = c''$. \\
 
 Por lo tanto, concluimos que la relación $ \rightsquigarrow $ es determinista.
@@ -291,5 +321,350 @@ Por lo tanto, concluimos que la relación $ \rightsquigarrow $ es determinista.
 %==============================================================================
 
 \section*{Ejercicio 6:}
+
+Utilizamos seis árboles distintos para realizar la derivación en varios pasos. Al
+final de la misma uniremos todos los resultados en un único árbol utilizando las reglas
+de la clausura reflexivo-transitiva. \\
+En el primer árbol probamos $\step{t_1}{t_2}$
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{NVal}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{1}{\extf{\extf{\sigma}{x}{2}}{y}{2}}   
+            }
+            {
+                \pair{1}{\extf{\extf{\sigma}{x}{2}}{y}{2}}
+            }
+    $}
+    \RightLabel{\rn{EAssgn}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{\eassgn{y}{1}}{\extf{\extf{\sigma}{x}{2}}{y}{2}}   
+            }
+            {
+                \pair{1}{\extf{\extf{\sigma}{x}{2}}{y}{1}}
+            }
+    $}
+    \RightLabel{\rn{Ass}}
+    \UnaryInfC{$
+        \step
+            {
+             \pair{\clet{x}{\eassgn{y}{1}}}{\extf{\extf{\sigma}{x}{2}}{y}{2}}
+            }
+            {
+             \pair{\cskip}{\extf{\extf{\sigma}{x}{1}}{y}{1}}
+            }
+    $}
+    \RightLabel{\rn{Seq$_2$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\cseq{\clet{x}{\eassgn{y}{1}}}{\underbrace{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}_{c_1}}}
+               {\extf{\extf{\sigma}{x}{2}}{y}{2}}
+             }_{t_1}
+            }
+            {
+              \underbrace
+              {
+               \pair{\cseq{\cskip}{c_1}}{\extf{\extf{\sigma}{x}{1}}{y}{1}}
+              }_{t_2}
+            }
+    $}
+\end{prooftree}
+
+En este segundo árbol probamos $\step{t_2}{t_3}$
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{Seq$_1$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\cseq{\cskip}{\underbrace{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}_{c_1}}}
+                  {\extf{\extf{\sigma}{x}{1}}{y}{1}}
+             }_{t_2}
+            }
+            {
+             \underbrace{\pair{c_1}{\extf{\extf{\sigma}{x}{1}}{y}{1}}}_{t_3}
+            }
+    $}
+\end{prooftree}
+
+En este tercer árbol probamos $\step{t_3}{t_4}$.
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{Var}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{x}{\sigma'}
+            }
+            {
+             \pair{1}{\sigma'}
+            }
+    $}
+    \AxiomC{}
+    \RightLabel{\rn{NVal}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{0}{\sigma'}
+            }
+            {
+             \pair{0}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{Gt}}
+    \BinaryInfC{$
+        \sexp
+            {
+             \pair{\egt{x}{0}}{\sigma'}
+            }
+            {
+             \pair{\etrue}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{While$_1$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\underbrace{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}_{c_1}}{\underbrace{\extf{\extf{\sigma}{x}{1}}{y}{1}}_{\sigma'}}
+             }_{t_3}
+            }
+            {
+             \underbrace
+             {
+              \pair{\cseq{\clet{x}{\eminus{x}{y}}}{c_1}}{\sigma'}
+             }_{t_4}
+            }
+    $}
+\end{prooftree}
+
+En este cuarto árbol probamos $\step{t_4}{t_5}$.
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{Var}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{x}{\sigma'}
+            }
+            {
+             \pair{1}{\sigma'}
+            }
+    $}
+    \AxiomC{}
+    \RightLabel{\rn{Var}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{y}{\sigma'}
+            }
+            {
+             \pair{1}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{Minus}}
+    \BinaryInfC{$
+        \step
+            {
+             \pair{\eminus{x}{y}}{\sigma'}
+            }
+            {
+             \pair{0}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{Ass}}
+    \UnaryInfC{$
+        \step
+            {
+             \pair{\clet{x}{\eminus{x}{y}}}{\sigma'}
+            }
+            {
+             \pair{\cskip}{\sigma''}
+            }
+    $}
+    \RightLabel{\rn{Seq$_2$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\cseq{\clet{x}{\eminus{x}{y}}}{\underbrace{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}_{c_1}}}
+                   {\underbrace{\extf{\extf{\sigma}{x}{1}}{y}{1}}_{\sigma'}}
+             }_{t_4}
+            }
+            {
+             \underbrace
+             {
+              \pair{\cseq{\cskip}{c_1}}
+                   {\underbrace{\extf{\extf{\sigma}{x}{0}}{y}{1}}_{\sigma''}}
+             }_{t_5}
+            }
+    $}
+\end{prooftree}
+
+En este quinto árbol probamos $\step{t_5}{t_6}$.
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{Seq$_1$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\cseq{\cskip}{\underbrace{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}_{c_1}}}
+                   {\extf{\extf{\sigma}{x}{0}}{y}{1}}
+             }_{t_5}
+            }
+            {
+             \underbrace
+             {
+              \pair{c_1}
+                   {\extf{\extf{\sigma}{x}{0}}{y}{1}}
+             }_{t_6}
+            }
+    $}
+\end{prooftree}
+
+Por último probamos $\step{t_6}{t_7}$.
+
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{\rn{Var}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{x}{\sigma'}
+            }
+            {
+             \pair{0}{\sigma'}
+            }
+    $}
+    \AxiomC{}
+    \RightLabel{\rn{NVal}}
+    \UnaryInfC{$
+        \sexp
+            {
+             \pair{0}{\sigma'}
+            }
+            {
+             \pair{0}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{Gt}}
+    \BinaryInfC{$
+        \sexp
+            {
+             \pair{\egt{x}{0}}{\sigma'}
+            }
+            {
+             \pair{\efalse}{\sigma'}
+            }
+    $}
+    \RightLabel{\rn{While$_2$}}
+    \UnaryInfC{$
+        \step
+            {
+             \underbrace
+             {
+              \pair{\cwhile{\egt{x}{0}}{\clet{x}{\eminus{x}{y}}}}
+                   {\underbrace{\extf{\extf{\sigma}{x}{0}}{y}{1}}_{\sigma'}}
+             }_{t_6}
+            }
+            {
+             \underbrace{\pair{\cskip}{\sigma'}}_{t_7}
+            }
+    $}
+\end{prooftree}
+
+Ahora, utilizando las siguientes reglas de la clausura reflexivo transitiva:
+
+\[
+\infr[\rn{E$_1$}]{\step{t}{t'}}{\steps{t}{t'}}
+\
+\qquad
+\infr[\rn{E$_2$}]{\steps{t}{t'} \quad \steps{t'}{t''}}{\steps{t}{t''}}
+\]
+
+probamos que $\steps{t_1}{t_7}$:
+
+\begin{prooftree}
+    \AxiomC{$\step{t_1}{t_2}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_1}{t_2}$}
+    \AxiomC{$\step{t_2}{t_3}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_2}{t_3}$}
+    \RightLabel{\rn{E$_2$}}
+    \BinaryInfC{$\steps{t_1}{t_3}$}
+    \AxiomC{$\step{t_3}{t_4}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_3}{t_4}$}
+    \AxiomC{$\step{t_4}{t_5}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_4}{t_5}$}
+    \RightLabel{\rn{E$_2$}}
+    \BinaryInfC{$\steps{t_3}{t_5}$}
+    \RightLabel{\rn{E$_2$}}
+    \BinaryInfC{$\steps{t_1}{t_5}$}
+    \AxiomC{$\step{t_5}{t_6}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_5}{t_6}$}
+    \AxiomC{$\step{t_6}{t_7}$}
+    \RightLabel{\rn{E$_1$}}
+    \UnaryInfC{$\steps{t_6}{t_7}$}
+    \RightLabel{\rn{E$_2$}}
+    \BinaryInfC{$\steps{t_5}{t_7}$}
+    \RightLabel{\rn{E$_1$}}
+    \BinaryInfC{$\steps{t_1}{t_7}$}
+\end{prooftree}
+
+%==============================================================================
+%==============================================================================
+%==============================================================================
+
+\section*{Ejercicio 10:}
+
+A continuación agregamos la regla de producción para el comando \textbf{for} a la
+gramática y extendemos la semántica operacional.
+
+\subsection*{Regla de producción en la gramática abstracta de LIS}
+
+\begin{align*}
+comm ::=& \; \textbf{skip} \\
+        &| \;\; var = intexp \\
+        &| \;\; comm; \; comm \\
+        &| \;\; \textbf{if} \; boolexp \; \textbf{then} \; comm \; \textbf{else} \; comm \\
+        &| \;\; \textbf{while} \; boolexp \; \textbf{do} \; comm \\
+        &| \;\; \textbf{for} \; (intexp \; ; \; boolexp \; ; \; intexp) \; comm  
+\end{align*}
+
+\subsection*{Semántica operacional para el comando for}
+\[
+\infr[\rn{For}]
+  {\sexp
+    {\pair{e_1}{\sigma}}
+    {\pair{n}{\sigma'}}
+  }
+  {\step
+    {\pair{\cfor{e_1}{e_2}{e_3}{c}}{\sigma}}
+    {\pair{\cwhile{e_2}{(\cseq{c}{{\cif{e_3 == 0}{\cskip}{\cskip}}})}}
+          {\sigma'}}
+  }
+\
+\]
 
 \end{document}
