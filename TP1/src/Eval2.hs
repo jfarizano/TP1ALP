@@ -44,17 +44,18 @@ stepComm Skip s = Right (Skip :!: s)
 stepComm (Let x e) s = case evalExp e s of
                         Left error -> Left error
                         Right (n :!: s') -> let s'' = update x n s'
-                                            in Right (Skip :!: s'')                                           
+                                            in Right (Skip :!: s'')
+stepComm (Seq Skip c1) s = Right (c1 :!: s)                          
 stepComm (Seq c0 c1) s = case stepComm c0 s of
                            Left error -> Left error
-                           Right (_ :!: s') -> stepComm c1 s' 
+                           Right (c0' :!: s') -> Right ((Seq c0' c1) :!: s') 
 stepComm (IfThenElse e c0 c1) s = case evalExp e s of
                                     Left error -> Left error
-                                    Right (b :!: s') -> if b then stepComm c0 s'
-                                                             else stepComm c1 s'
+                                    Right (b :!: s') -> if b then Right (c0 :!: s')
+                                                             else Right (c1 :!: s')
 stepComm w@(While e c) s = case evalExp e s of
                             Left error -> Left error
-                            Right (b :!: s') -> if b then stepComm (Seq c w) s'
+                            Right (b :!: s') -> if b then Right ((Seq c w) :!: s')
                                                      else Right (Skip :!: s')
 
 -- Evalua una expresion

@@ -16,12 +16,15 @@
 
 \setlength{\parindent}{5pt}
 
-\title{Trabajo Práctico 1}
+\title{%
+    Trabajo Práctico N° 1 \\
+    \large Análisis de Lenguajes de Programación}
 \author{Mellino, Natalia \and Farizano, Juan Ignacio}
 \date{}
 
 \begin{document}
 \maketitle
+\noindent\rule{\textwidth}{1pt}
 
 %==============================================================================
 %==============================================================================
@@ -216,12 +219,12 @@ Queremos probar : $ c \rightsquigarrow c', \: c \rightsquigarrow c'' \Rightarrow
 $\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{ASS}: \\
 $c$ tiene la forma $\langle v=e, \sigma \rangle$ y tenemos la premisa
 $\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n, \sigma' \rangle$,
-inmediatamente debido a la regla \rn{Asumimos} obtenemos que
+inmediatamente debido a la regla \rn{Ass} obtenemos que
 $c' = \: \langle \textbf{skip}, [\sigma' \: \vert v : n] \rangle$.
 
 Supongamos entonces, que esta relación no es determinista, es decir que $ c' \neq c'' $.
 Por la forma que tiene $c$ observemos que la única regla que podemos usar en la
-derivación $ c \rightsquigarrow c'' $ es la regla \rn{Asumimos}, entonces tenemos que:
+derivación $ c \rightsquigarrow c'' $ es la regla \rn{Ass}, entonces tenemos que:
 $ \langle v=e, \sigma \rangle \rightsquigarrow \langle \textbf{skip}, [\sigma'' \: \vert v : n'] \rangle$
 con la premisa $\langle e, \sigma \rangle \: \Downarrow_{exp} \: \langle n', \sigma'' \rangle$
 Como $ c' \neq c'' $ vemos que $ \sigma' \neq \sigma'' \lor n \neq n''$.
@@ -233,8 +236,8 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ1}: \\
-$c$ tiene la forma $\langle \textbf{skip};c_1, \sigma \rangle$ y tenemos que $c' = \langle c_1, sigma \rangle$.
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ$_1$}: \\
+$c$ tiene la forma $\langle \textbf{skip};c_1, \sigma \rangle$ y tenemos que $c' = \langle c_1, \sigma \rangle$.
 Por la forma que tiene $c$, observemos que no es posible aplicar ninguna otra regla
 de inferencia, por lo tanto en la derivación $ c \rightsquigarrow c'' $ se tiene que
 $c'' = \langle c_1, \sigma \rangle$. \\
@@ -243,28 +246,28 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ2}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{SEQ$_2$}: \\
 Tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1, \sigma \rangle$ y
 además:  $ \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle$.
 Ahora, analicemos que pasa en $ c \rightsquigarrow c'' $: ¿qué reglas podemos aplicar?
 
 \begin{itemize}
-      \item No podemos aplicar \rn{SEQ1} ya que esto nos diría que $c_0 = \textbf{skip}$ y esto
+      \item No podemos aplicar \rn{SEQ$_1$} ya que esto nos diría que $c_0 = \textbf{skip}$ y esto
             nos contradice $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0', \; \sigma \rangle$ ya que
-            si $c_0 = skip$ el estado $\sigma$ no debería pasar a ser $\sigma'$.
+            si $c_0 = \textbf{skip}$ el estado no debería modificarse.
       \item En cuanto a las demás reglas, es claro que por la forma que tiene $c$ no es
             posible aplicarlas.
 \end{itemize}
 
-Por lo tanto, la única regla que podemos aplicar es \rn{SEQ2}. Si suponemos que 
+Por lo tanto, la única regla que podemos aplicar es \rn{SEQ$_2$}. Si suponemos que 
 $c' \neq c''$ tenemos entonces que $c$ tiene la forma: $\langle c_0;c_1,\sigma \rangle$ y
 además:  $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0'', \sigma'' \rangle$.
 Luego sigue que $c''$ tiene la forma: $ \langle c_0'';c1, \sigma'' \rangle$.
 Sin embargo, observemos que $ \langle c_0, \sigma \rangle \rightsquigarrow \langle c_0', \; \sigma' \rangle$
 es una subderivación y por lo tanto vale nuestra Hipótesis Inductiva, es decir necesariamente:
-
 \begin{equation*}
- \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle = \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0'', \; \sigma'' \rangle
+ \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0', \sigma' \rangle \land \langle c_0, \; \sigma \rangle \rightsquigarrow \langle c_0'', \; \sigma'' \rangle
+ \Rightarrow \langle c_0', \sigma' \rangle =  \langle c_0'', \; \sigma'' \rangle
 \end{equation*}
 
 Por lo tanto, $c_0' = c_0''$ y $\sigma' = \sigma''$. \\
@@ -273,24 +276,24 @@ $\therefore \; c' = c''$ \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF1}: \\
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF$_1$}: \\
 $c$ tiene la forma $ \langle \textbf{if } \text{b \textbf{then} } c_0 \textbf{ else } c_1, \; \sigma \rangle$
 y además $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$.
 Entonces $c'$ tiene la forma $ \langle c_0, \sigma' \rangle$. ¿Qué pasa en el caso
-de  $ c \rightsquigarrow c'' $. Sabemos que por la forma que tiene $c$ y por el hecho de
+de  $ c \rightsquigarrow c'' $?. Sabemos que por la forma que tiene $c$, por el 
+deterministo de $\Downarrow_{exp}$ y por el hecho de
 que $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
-sólo podemos aplicar la regla \rn{IF1}. Recordemos que la relación $\Downarrow_{exp}$ es
-determinista y por eso podemos decir que sólo podamos aplicar \rn{IF1}. inmediatamente
+sólo podemos aplicar la regla \rn{IF$_1$}. Inmediatamente
 de esta conclusión surge que $c' = c''$. \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF2}:
-\begin{center}(este caso es análogo a la regla \rn{IF1})\end{center}
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{IF$_2$}:
+\begin{center}(este caso es análogo a la regla \rn{IF$_1$})\end{center}
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE1}: tenemos entonces que
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE$_1$}: tenemos entonces que
 \begin{itemize}
       \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \sigma \rangle$.
       \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{true}, \sigma' \rangle$
@@ -298,12 +301,12 @@ $\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE1}: te
 \end{itemize}
 
 Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
-de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE1}. Por estas dos cosas
+de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE$_1$}. Por estas dos cosas
 surge inmediatamente que $c' = c''$. \\
 
 %==============================================================================
 
-$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE2}: tenemos entonces que
+$\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE$_2$}: tenemos entonces que
 \begin{itemize}
       \item $c$ tiene la forma $ \langle \textbf{while } \text{b \textbf{do} } c_0, \; \sigma \rangle$.
       \item $ \langle b, \sigma \rangle \Downarrow_{exp} \langle \textbf{false}, \sigma' \rangle$
@@ -311,7 +314,7 @@ $\bullet$ Si $ c \rightsquigarrow c' $ usando como última regla \rn{WHILE2}: te
 \end{itemize}
 
 Luego en $ c \rightsquigarrow c'' $ ocurre que por la forma de $c$ y por el determinismo
-de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE1}. Por estas dos cosas
+de $\Downarrow_{exp}$, la única regla que podemos usar es \rn{WHILE$_2$}. Por estas dos cosas
 surge inmediatamente que $c' = c''$. \\
 
 Por lo tanto, concluimos que la relación $ \rightsquigarrow $ es determinista.
@@ -477,7 +480,7 @@ En este cuarto árbol probamos $\step{t_4}{t_5}$.
     $}
     \RightLabel{\rn{Minus}}
     \BinaryInfC{$
-        \step
+        \sexp
             {
              \pair{\eminus{x}{y}}{\sigma'}
             }
@@ -600,37 +603,42 @@ Ahora, utilizando las siguientes reglas de la clausura reflexivo transitiva:
 \]
 
 probamos que $\steps{t_1}{t_7}$:
+\begin{equation*}
+\step{t_1}{\step{t_2}{\step{t_3}{\step{t_4}{\step{t_5}{\step{t_6}{t_7}}}}}}
+\end{equation*}
 
-\begin{prooftree}
-    \AxiomC{$\step{t_1}{t_2}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_1}{t_2}$}
-    \AxiomC{$\step{t_2}{t_3}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_2}{t_3}$}
-    \RightLabel{\rn{E$_2$}}
-    \BinaryInfC{$\steps{t_1}{t_3}$}
-    \AxiomC{$\step{t_3}{t_4}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_3}{t_4}$}
-    \AxiomC{$\step{t_4}{t_5}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_4}{t_5}$}
-    \RightLabel{\rn{E$_2$}}
-    \BinaryInfC{$\steps{t_3}{t_5}$}
-    \RightLabel{\rn{E$_2$}}
-    \BinaryInfC{$\steps{t_1}{t_5}$}
-    \AxiomC{$\step{t_5}{t_6}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_5}{t_6}$}
-    \AxiomC{$\step{t_6}{t_7}$}
-    \RightLabel{\rn{E$_1$}}
-    \UnaryInfC{$\steps{t_6}{t_7}$}
-    \RightLabel{\rn{E$_2$}}
-    \BinaryInfC{$\steps{t_5}{t_7}$}
-    \RightLabel{\rn{E$_1$}}
-    \BinaryInfC{$\steps{t_1}{t_7}$}
-\end{prooftree}
+$ \therefore \steps{t_1}{t_7} $
+
+% \begin{prooftree}
+%     \AxiomC{$\step{t_1}{t_2}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_1}{t_2}$}
+%     \AxiomC{$\step{t_2}{t_3}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_2}{t_3}$}
+%     \RightLabel{\rn{E$_2$}}
+%     \BinaryInfC{$\steps{t_1}{t_3}$}
+%     \AxiomC{$\step{t_3}{t_4}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_3}{t_4}$}
+%     \AxiomC{$\step{t_4}{t_5}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_4}{t_5}$}
+%     \RightLabel{\rn{E$_2$}}
+%     \BinaryInfC{$\steps{t_3}{t_5}$}
+%     \RightLabel{\rn{E$_2$}}
+%     \BinaryInfC{$\steps{t_1}{t_5}$}
+%     \AxiomC{$\step{t_5}{t_6}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_5}{t_6}$}
+%     \AxiomC{$\step{t_6}{t_7}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \UnaryInfC{$\steps{t_6}{t_7}$}
+%     \RightLabel{\rn{E$_2$}}
+%     \BinaryInfC{$\steps{t_5}{t_7}$}
+%     \RightLabel{\rn{E$_1$}}
+%     \BinaryInfC{$\steps{t_1}{t_7}$}
+% \end{prooftree}
 
 %==============================================================================
 %==============================================================================

@@ -40,13 +40,14 @@ stepComm (Let x e) s = (Skip :!: s'')
                        where
                          (n :!: s') = evalExp e s
                          s'' = update x n s'
-stepComm (Seq c0 c1) s = stepComm c1 s' where (_ :!: s') = stepComm c0 s 
+stepComm (Seq Skip c1) s = (c1 :!: s)                        
+stepComm (Seq c0 c1) s = ((Seq c0' c1) :!: s') where (c0' :!: s') = stepComm c0 s
 stepComm (IfThenElse e c0 c1) s = if b 
-                                    then stepComm c0 s'
-                                    else stepComm c1 s'
+                                    then (c0 :!: s')
+                                    else (c1 :!: s')
                                   where (b :!: s') = evalExp e s
 stepComm w@(While e c) s = if b
-                            then stepComm (Seq c w) s'
+                            then ((Seq c w) :!: s')
                             else (Skip :!: s')
                            where (b :!: s') = evalExp e s
 
